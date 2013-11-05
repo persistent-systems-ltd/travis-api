@@ -23,7 +23,7 @@ GIT
 
 GIT
   remote: git://github.com/travis-ci/travis-core.git
-  revision: 12e52ccefa2b54e2dfdef1350c28df01397e1104
+  revision: 5bb1fd3c2f5d599e5eb567cda737d4c65047ecce
   branch: repository-settings
   specs:
     travis-core (0.0.1)
@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: git://github.com/travis-ci/travis-support.git
-  revision: 7c69fe727968b31551ce3acbe0d4f2e0e5bc8fa3
+  revision: f1cbac986f09ee4045b3d381b6519adb95ab5695
   specs:
     travis-support (0.0.1)
 
