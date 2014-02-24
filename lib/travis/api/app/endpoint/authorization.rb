@@ -258,7 +258,7 @@ class Travis::Api::App
               url += "#existing-user" if manager.user_exists?
               redirect to(url)
             else
-              halt 400, 'Insufficient OAuth scopes.'
+              halt 400, "Insufficient OAuth scopes! wanted: %p, got: %p" % [User::Oauth.wanted_scopes, scopes]
             end
           end
 
