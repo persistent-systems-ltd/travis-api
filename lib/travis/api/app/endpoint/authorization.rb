@@ -254,9 +254,12 @@ class Travis::Api::App
             # TODO: we should probably only redirect if this is a web
             #      oauth request, are there any other possibilities to
             #      consider?
-            url =  Travis.config.oauth2.insufficient_access_redirect_url
-            url += "#existing-user" if manager.user_exists?
-            redirect to(url)
+            if url = Travis.config.oauth2.insufficient_access_redirect_url
+              url += "#existing-user" if manager.user_exists?
+              redirect to(url)
+            else
+              halt 400, 'Insufficient OAuth scopes.'
+            end
           end
 
           user   = manager.fetch
