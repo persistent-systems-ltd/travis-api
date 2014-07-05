@@ -45,7 +45,8 @@ GIT
 
 GIT
   remote: git://github.com/travis-ci/travis-core.git
-  revision: 866ae05c2348d512b0e1571136ad770fd0fb8b4b
+  revision: 214897b5f4090e9975e2311c24d649856194a47d
+  branch: ha-bug-remove_log_really
   specs:
     travis-core (0.0.1)
       actionmailer (~> 3.2.19)
