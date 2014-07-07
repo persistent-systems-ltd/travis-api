@@ -45,7 +45,7 @@ GIT
 
 GIT
   remote: git://github.com/travis-ci/travis-core.git
-  revision: 25fb0cac632ddba0e2e0f55d6a62b20d402264a4
+  revision: 833101b005693cf01d8153e70dec19d564d4e49f
   branch: ha-bug-remove_log_really
   specs:
     travis-core (0.0.1)
