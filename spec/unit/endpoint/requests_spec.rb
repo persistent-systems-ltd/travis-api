@@ -11,6 +11,7 @@ describe Travis::Api::App::Endpoint::Requests do
   before do
     User.stubs(:find_by_github_id).returns(user)
     User.stubs(:find).returns(user)
+    user.stubs(:permission?).with(:push, repository_id: repo.id).returns false
   end
 
   describe 'POST to /' do
@@ -25,7 +26,17 @@ describe Travis::Api::App::Endpoint::Requests do
       end
 
       it 'includes a notice' do
-        expect(response.body).to eq '{"result":"not_found","flash":[{"error":"Repository owner/name not found."}]}'
+        expect(response.body).to eq '{"result":"not_found","flash":[{"error":"Repository not found."}]}'
+      end
+    end
+
+    describe 'if the repository does not have push permissions for that repo' do
+      it 'returns 404' do
+        expect(response.status).to eq 404
+      end
+
+      it 'includes a notice' do
+        expect(response.body).to eq '{"result":"not_found","flash":[{"error":"Repository not found."}]}'
       end
     end
 

@@ -5,32 +5,54 @@ require 'travis/services/base'
 class Travis::Api::App
   module Services
     class ScheduleRequest < Travis::Services::Base
+      MESSAGES = {
+        success:   { notice: 'Build request scheduled.' },
+        not_found: { error: 'Repository not found.' },
+        forbidden: { error: 'Forbidden.' }
+      }
+
       register :schedule_request
 
+      attr_reader :result
+
       def run
-        repo && active? ? schedule_request : not_found
+        schedule_request if validate
+        result
       end
 
       def messages
-        @messages ||= []
+        [MESSAGES[result]]
       end
 
       private
 
+        def validate
+          if !repo
+            @result = :not_found
+          elsif !active?
+            @result = :not_found
+          elsif !permission?
+            @result = :forbidden
+          end
+          !@result
+        end
+
         def schedule_request
           Metriks.meter('api.request.create').mark
           Travis::Sidekiq::BuildRequest.perform_async(type: 'api', payload: payload, credentials: {})
-          messages << { notice: 'Build request scheduled.' }
-          :success
+          @result = :success
         end
 
         def not_found
-          messages << { error: "Repository #{slug} not found." }
           :not_found
         end
 
         def active?
           Travis::Features.owner_active?(:request_create, repo.owner)
+        end
+
+        def permission?
+          current_user.permission?(:push, repository_id: repo.id)
         end
 
         def payload
