@@ -215,7 +215,7 @@ class Travis::Api::App
           end
 
           def info(attributes = {})
-            info = data.to_hash.slice('name', 'login', 'gravatar_id')
+            info = data.to_hash.slice('name', 'login', 'avatar_url')
             info.merge! attributes.stringify_keys
             if Travis::Features.feature_active?(:education_data_sync) ||
               (user && Travis::Features.owner_active?(:education_data_sync, user))
