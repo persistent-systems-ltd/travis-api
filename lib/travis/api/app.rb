@@ -192,12 +192,17 @@ module Travis::Api
 
       def self.setup_monitoring
         Raven.configure do |config|
+          config.async = method(:handle_exception)
           config.dsn = Travis.config.sentry.dsn
         end if Travis.config.sentry.dsn
 
         Travis::LogSubscriber::ActiveRecordMetrics.attach
         Travis::Notification.setup(instrumentation: false)
         Travis::Metrics.setup
+      end
+
+      def self.handle_exception(event)
+        p event
       end
 
       def self.load_endpoints
