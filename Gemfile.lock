@@ -7,11 +7,10 @@ GIT
 
 GIT
   remote: git://github.com/getsentry/raven-ruby.git
-  revision: 84392e5db701f0b5c66802aab9cc82ef9a5ad830
+  revision: c9f22e14d00c5dc8e356e14baf0855f7742dd3de
   specs:
-    sentry-raven (0.10.1)
+    sentry-raven (0.12.3)
       faraday (>= 0.7.6)
-      uuidtools
 
 GIT
   remote: git://github.com/rack/rack-contrib.git
@@ -323,7 +322,6 @@ GEM
       rack
       raindrops (~> 0.7)
     useragent (0.10.0)
-    uuidtools (2.1.5)
     virtus (1.0.3)
       axiom-types (~> 0.1)
       coercible (~> 1.0)

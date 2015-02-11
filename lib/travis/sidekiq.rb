@@ -26,3 +26,7 @@ end
 Sidekiq.configure_client do |config|
   config.redis = Travis.config.redis.merge(size: 1, namespace: Travis.config.sidekiq.namespace)
 end
+
+Raven.configure do |config|
+  config.dsn = Travis.config.sentry.dsn
+end if Travis.config.sentry.dsn

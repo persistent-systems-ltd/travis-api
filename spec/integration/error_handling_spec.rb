@@ -17,6 +17,8 @@ describe 'Exception' do
     set_app Raven::Rack.new(FixRaven.new(app))
     Raven.configure do |config|
       config.async = Travis::Api::App.method(:handle_exception)
+      config.environments = ['test']
+      config.server = :server
     end
   end
 
