@@ -205,9 +205,10 @@ module Travis::Api
         return false unless Raven.client.__send__(:configuration_allows_sending)
         Raven.logger.debug "Enqueuing event #{event.id} to Sidekiq"
         content_type, encoded_data = Raven.client.__send__(:encode, event)
-        payload = JSON.dump(content_type: content_type, encoded_data: encoded_data) 
+        payload = JSON.dump(content_type: content_type, encoded_data: encoded_data)
         p payload
-        #enqueue to sidekiq and pass th epayload                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+        #enqueue to sidekiq and pass th epayload
+        Travis::Sidekiq::ErrorHandling.perform_async()
       end
 
       def self.load_endpoints
