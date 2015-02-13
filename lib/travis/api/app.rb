@@ -93,7 +93,7 @@ module Travis::Api
         end
 
         use Travis::Api::App::Cors # if Travis.env == 'development' ???
-        use Raven::Rack if Endpoint.production? && Travis.config.sentry.dsn
+        use Raven::Rack if Travis.env == 'production' || Travis.env == 'staging'
         use Rack::Protection::PathTraversal
         use Rack::SSL if Endpoint.production?
         use ActiveRecord::ConnectionAdapters::ConnectionManagement
@@ -157,6 +157,10 @@ module Travis::Api
         defined? Travis::Console
       end
 
+      def self.use_monitoring?
+        Travis.env == 'production' || Travis.env == 'staging'
+      end
+
       def self.setup!
         setup_travis
         load_endpoints
@@ -170,13 +174,13 @@ module Travis::Api
 
         setup_database_connections
 
-        if Travis.env == 'production' || Travis.env == 'staging'
+        if use_monitoring?
           Sidekiq.configure_client do |config|
             config.redis = Travis.config.redis.merge(size: 1, namespace: Travis.config.sidekiq.namespace)
           end
         end
 
-        if (Travis.env == 'production' || Travis.env == 'staging') and not console?
+        if use_monitoring? and not console?
           setup_monitoring
         end
       end

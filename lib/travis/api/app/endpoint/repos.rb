@@ -15,6 +15,8 @@ class Travis::Api::App
       #
       # json(:repositories)
       get '/' do
+        p "***********************"
+        carla
         prefer_follower do
           respond_with service(:find_repos, params)
         end
